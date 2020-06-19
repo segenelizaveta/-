@@ -10,12 +10,7 @@ namespace Задача_2
 {
     class Program
     {
-        public static int MAX(string a, string b)
-        {
-            if (a.Length > b.Length)
-                return a.Length;
-            else return b.Length;
-        }
+       
         static void Main(string[] args)
         {
             Console.WriteLine("Введите n и k через пробел.");
