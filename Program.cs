@@ -1,27 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Задача_2
+namespace Задача1
 {
     class Program
     {
-       
-        static void Main(string[] args)
+        public static int NOD(int a, int b)
         {
-            Console.WriteLine("Введите n и k через пробел.");
+            while ((a != 0) & (b != 0))
+            {
+                if (a > b)
+                    a = a % b;
+                else b = b % a;
+            }
+            if (a > b)
+                return a;
+            else return b;
+        }
+        static void Main(string[] args)
+
+        {
+            Console.WriteLine("Введите n,x,y через пробел.После последнего числа поставьте пробел.");
+            int nod;
+            double time;
             string text = "";
             int count = 0;
-            int n = 0, k = 0;
+            int n=0, x=0, y=0;
             string input_f = "input.txt";
             string output_f = "output.txt";
-            string h;
-            int i, j, z;
-
 
             using (FileStream sf = new FileStream(input_f, FileMode.Create)) { }
             using (StreamWriter writer = new StreamWriter(input_f))
@@ -37,27 +48,33 @@ namespace Задача_2
                 {
 
                     char chr = (char)reader.Read();
-
+                    
                     if (((chr >= '1') & (chr <= '9')) || (chr == '0'))
                         text += chr;
-                    else if (chr != ' ')
+                    else if (chr!=' ')
                     {
                         Console.WriteLine("Введите 3 целых положительных числа после пробел.Поставьте пробел после положительного числа");
                         break;
                     }
-                    if (chr == ' ')
+                        if (chr == ' ')
                     {
                         if (text != "") count++;
 
                         switch (count)
                         {
                             case 1: n = Convert.ToInt32(text); break;
-                            case 2:
-                                k = Convert.ToInt32(text);
-                                if (k > n)
+                            case 2: x = Convert.ToInt32(text);
+                                if (x > 10)
                                 {
-                                    k = 0;
-                                    Console.WriteLine("k должно быть меньше n");
+                                    x = 0;
+                                    Console.WriteLine("x и y должны быть меньше 11");
+                                }
+                                    break;
+                            case 3: y = Convert.ToInt32(text);
+                                if (y > 10)
+                                {
+                                    y = 0;
+                                    Console.WriteLine("x и y должны быть меньше 11");
                                 }
                                 break;
                         }
@@ -65,61 +82,31 @@ namespace Задача_2
 
                     }
                 } while (reader.Peek() > -1);
-                if (k == 0) k = Convert.ToInt32(text);
-
             }
-
-            if ((n != 0) & (k != 0))
+            if ((n != 0) & (x != 0) & (y != 0))
             {
-               
-                using (StreamWriter writer = new StreamWriter(input_f))
-                {
-                    Console.WriteLine(n+" "+k);
-                }
-                string[] mas = new string[n];
-                for (i = 0; i < n; i++)
-                {
-                    mas[i] = Convert.ToString(i+1);
-                }
-                int length = mas[n-1].Length;
-                z = 0;
-                for (i = 0; i < n - 1; i++)
-                {
-                    for (j = i +1; j < n; j++)
-                    {
-                        for (z = 0; z < length; z++)
-                        {
-                            if ((mas[i].Length <= z) || (mas[j].Length <= z))
-                                break;
-                            if (mas[i][z] > mas[j][z])
-                            {
-                                h = mas[i];
-                                mas[i] = mas[j];
-                                mas[j] = h;
-                                break;
-                            }
-                            if (mas[i][z] < mas[j][z]) break;
-                        }
-                    }
-                }
-                for (i = 1; i <= n - 1; i++)
-                {
-                    if (mas[i] == Convert.ToString(k))
-                    {
-                        using (FileStream sf = new FileStream(output_f, FileMode.OpenOrCreate)) { }
-                        using (StreamWriter writer = new StreamWriter(output_f))
-                        {
-                            writer.Write(i+1);
-                        }
-                        Console.WriteLine("\nOUTPUT.TXT\n\n" + (i+1));
-                        Console.ReadKey();
-                        break;
-                    }
-                }
+                Console.Write(n + " " + x + " " + y);
+                nod = NOD(x, y);
+                double x2 = Convert.ToDouble(x);
+                double y2 = Convert.ToDouble(y);
+                double nod2 = Convert.ToDouble(nod);
+                double s1 = nod2 / x2;
+                double s2 = nod2 / y2;
+                time = n * nod / ((s1 + s2));
+                time = Math.Truncate(time);
+                while ((time % x != 0) & (time % y != 0))
+                    time++;
 
+                using (FileStream sf = new FileStream(output_f, FileMode.OpenOrCreate)) { }
+                using (StreamWriter writer = new StreamWriter(output_f))
+                {
+                    writer.Write(time);
+                }
+                Console.WriteLine("\nOUTPUT.TXT\n\n" + time);
 
+                Console.ReadKey();
             }
-
+            else Console.WriteLine("Ошибка!");
         }
     }
 }
