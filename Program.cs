@@ -1,78 +1,63 @@
 ﻿using System;
 
-namespace Задача_5
+namespace Задача_6
 {
     class Program
     {
+        public static void Rekur(ref double a1, ref double a2, ref double a3, ref int count)
+        {
+            double x;
+            count++;
+            x = (a2 / a3) + Math.Abs(a1);
+            Console.Write( x + " ");
+            a1 = a2;
+            a2 = a3;
+            a3 = x;
+        }
         static void Main(string[] args)
         {
-            Random rand = new Random() ;
+            double a1, a2, a3, m;
+            int n;
             bool ok;
-            int punkt,i,k;
-            int[] mas = new int[64];
-            Console.WriteLine("Выберите способ ввода");
-            Console.WriteLine("1. Ручной ввод");
-            Console.WriteLine("2.Рандом");
+            Console.WriteLine("Введите а1,а2,а3, N и M");
             do
             {
-                ok = Int32.TryParse(Console.ReadLine(), out punkt);
-                if ((!ok) || (punkt < 1) || (punkt > 2)) Console.WriteLine("Ошибка!Введите 1 или 2.");
-            } while ((!ok) || (punkt < 1) || (punkt > 2));
-
-            switch (punkt)
+                ok = Double.TryParse(Console.ReadLine(), out a1);
+                if (!ok) Console.WriteLine("Ошибка!Введите число.");
+            } while (!ok);
+            do
             {
-                case 1:
-                    {
-                        for (i=0;i<64;i++)
-                        {
-                            do
-                            {
-                                ok = Int32.TryParse(Console.ReadLine(), out mas[i]);
-                                if (!ok)  Console.WriteLine("Ошибка!Введите 1 или 2.");
-                            } while (!ok);
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        for (i = 0; i < 64; i++)
-                        {
-                            mas[i] = rand.Next(-100,100) ;
-                        }
-                        break;
-                    }
-            }
-            Console.WriteLine("Начальная последовательность:");
-            for (i=0;i<64;i++)
+                ok = Double.TryParse(Console.ReadLine(), out a2);
+                if (!ok) Console.WriteLine("Ошибка!Введите число.");
+                if (a2 == 0) Console.WriteLine("Ошибка! a2 не может быть 0.");
+            } while ((!ok) || (a2 == 0));
+            do
             {
-                if (i % 8 == 0) Console.WriteLine();
-                Console.Write(mas[i] + " ");
-            }
+                ok = Double.TryParse(Console.ReadLine(), out a3);
+                if (!ok) Console.WriteLine("Ошибка!Введите число.");
+                if (a3 == 0) Console.WriteLine("Ошибка! a3 не может быть 0.");
+            } while ((!ok) || (a2 == 0));
+            do
+            {
+                ok = Int32.TryParse(Console.ReadLine(), out n);
+                if (!ok) Console.WriteLine("Ошибка!Введите целое положительное число.");
+                if (n <= 3) Console.WriteLine("Ошибка! N должно быть");
+            } while ((!ok) || (n <= 3));
+            do
+            {
+                ok = Double.TryParse(Console.ReadLine(), out m);
+                if (!ok) Console.WriteLine("Ошибка!Введите число.");
+            } while (!ok);
             Console.WriteLine();
-            Console.WriteLine("Полученная матрица:");
-            k = 0;
-            string s = "";
-            for (i = 0; i < 64; i++)
+            Console.Write(a1 + " " + a2 + " " + a3 + " ");
+            int count = 3;
+            while ((count < n) & (a3 < m))
             {
-                if (i % 8 == 0)
-                {
-                    Console.WriteLine();
-                    k++;
-                }
-                if (k % 2 == 0)
-                {
-                    Console.Write(mas[i] + " ");
-                }
-                else
-                {
-                    s = mas[i] + " " + s;
-                    if ((i + 1) % 8 == 0)
-                    {
-                        Console.Write(s);
-                        s = "";
-                    }
-                }
+                Rekur(ref a1,ref a2,ref a3,ref count);
             }
+            if (count == n) Console.WriteLine("Количество элементов достигло N.");
+            if (a3 > m) Console.WriteLine("Элемент стал больше, чем M.");
+
         }
     }
 }
