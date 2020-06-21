@@ -1,63 +1,65 @@
 ﻿using System;
 
-namespace Задача_6
+namespace Задача_7
 {
     class Program
     {
-        public static void Rekur(ref double a1, ref double a2, ref double a3, ref int count)
+        public static int Heming(int i, string word)
         {
-            double x;
-            count++;
-            x = (a2 / a3) + Math.Abs(a1);
-            Console.Write( x + " ");
-            a1 = a2;
-            a2 = a3;
-            a3 = x;
+            int a, j;
+            int count = 0;
+            int bayt = 0;
+            int c = Convert.ToInt32(word[i]);
+            do
+            {
+                for (j = i; j < i + i - 1; j++)
+                {
+                    if (j < word.Length)
+                    {
+                        count++;
+                        if (count % 2 != 0) bayt = bayt + Convert.ToInt32(word[j]);
+                    }
+                }
+                i = i + i * 2;
+            } while ((i < word.Length) && (j < word.Length));
+            if (bayt % 2 == 0) bayt = 0;
+            else bayt = 1;
+            return bayt;
         }
         static void Main(string[] args)
         {
-            double a1, a2, a3, m;
-            int n;
-            bool ok;
-            Console.WriteLine("Введите а1,а2,а3, N и M");
+            int i, bayt;
+            double j;
+            bool ok = true;
+            string word;
             do
             {
-                ok = Double.TryParse(Console.ReadLine(), out a1);
-                if (!ok) Console.WriteLine("Ошибка!Введите число.");
+                ok = true;
+                Console.WriteLine("Введите кодовое слово");
+                word = Console.ReadLine();
+                foreach (char c in word)
+                {
+                    if ((c != '0') & (c != '1'))
+                    {
+                        Console.WriteLine("Error!");
+                        ok = false;
+                    }
+                }
             } while (!ok);
-            do
+            for (i = 0; i < word.Length; i++)
             {
-                ok = Double.TryParse(Console.ReadLine(), out a2);
-                if (!ok) Console.WriteLine("Ошибка!Введите число.");
-                if (a2 == 0) Console.WriteLine("Ошибка! a2 не может быть 0.");
-            } while ((!ok) || (a2 == 0));
-            do
-            {
-                ok = Double.TryParse(Console.ReadLine(), out a3);
-                if (!ok) Console.WriteLine("Ошибка!Введите число.");
-                if (a3 == 0) Console.WriteLine("Ошибка! a3 не может быть 0.");
-            } while ((!ok) || (a2 == 0));
-            do
-            {
-                ok = Int32.TryParse(Console.ReadLine(), out n);
-                if (!ok) Console.WriteLine("Ошибка!Введите целое положительное число.");
-                if (n <= 3) Console.WriteLine("Ошибка! N должно быть");
-            } while ((!ok) || (n <= 3));
-            do
-            {
-                ok = Double.TryParse(Console.ReadLine(), out m);
-                if (!ok) Console.WriteLine("Ошибка!Введите число.");
-            } while (!ok);
-            Console.WriteLine();
-            Console.Write(a1 + " " + a2 + " " + a3 + " ");
-            int count = 3;
-            while ((count < n) & (a3 < m))
-            {
-                Rekur(ref a1,ref a2,ref a3,ref count);
+                j = (Convert.ToDouble(i));
+                if (Math.Log(j+1, 2) % 1 == 0)
+                {
+                    bayt = Heming(i, word) - Convert.ToInt32(word[i]);
+                    if (bayt != Convert.ToInt32(word[i]))
+                    {
+                        Console.WriteLine("Ошибка в " + (i + 1) + " разряде");
+                        ok = false;
+                    }
+                }
             }
-            if (count == n) Console.WriteLine("Количество элементов достигло N.");
-            if (a3 > m) Console.WriteLine("Элемент стал больше, чем M.");
-
+            if (ok == true) Console.WriteLine("Ошибок нет");
         }
     }
 }
